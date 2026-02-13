@@ -1,0 +1,497 @@
+{
+  "phases": [
+    {
+      "id": "plan",
+      "name": "Plan & Design",
+      "slug": "plan",
+      "description": "Security planning and threat modeling before development begins. Learn to incorporate security requirements into the planning phase.",
+      "difficulty": "beginner",
+      "order": 1,
+      "skills": [
+        {
+          "id": "threat-modeling",
+          "name": "Threat Modeling",
+          "description": "Identify potential threats and vulnerabilities early in the design phase",
+          "subSkills": [
+            {"id": "stride", "name": "STRIDE Methodology", "description": "Understand Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege"},
+            {"id": "attack-surface", "name": "Attack Surface Analysis", "description": "Identify all possible entry points for attackers"},
+            {"id": "data-flow", "name": "Data Flow Diagrams", "description": "Map data flow through the system to identify security boundaries"}
+          ],
+          "tools": ["owasp-threat-dragon", "microsoft-tmt"],
+          "resources": ["owasp-threat-modeling-guide"]
+        },
+        {
+          "id": "security-requirements",
+          "name": "Security Requirements",
+          "description": "Define security user stories and compliance requirements",
+          "subSkills": [
+            {"id": "security-stories", "name": "Security User Stories", "description": "Write security-focused user stories for development teams"},
+            {"id": "compliance-mapping", "name": "Compliance Mapping", "description": "Map regulatory requirements to technical controls"},
+            {"id": "risk-assessment", "name": "Risk Assessment", "description": "Assess and prioritize security risks"}
+          ],
+          "tools": ["jira", "confluence"],
+          "resources": ["owasp-samm", "nist-guidelines"]
+        },
+        {
+          "id": "secure-design",
+          "name": "Secure Architecture Design",
+          "description": "Design systems with security built-in from the start",
+          "subSkills": [
+            {"id": "defense-depth", "name": "Defense in Depth", "description": "Layer multiple security controls throughout the system"},
+            {"id": "zero-trust", "name": "Zero Trust Architecture", "description": "Never trust, always verify - implement least privilege access"},
+            {"id": "secure-patterns", "name": "Security Design Patterns", "description": "Apply proven security patterns to common design challenges"}
+          ],
+          "tools": ["threat-modeling-tools", "architecture-diagram-tools"],
+          "resources": ["owasp-security-design-patterns", "security-architecture-guide"]
+        }
+      ],
+      "tools": ["owasp-threat-dragon", "microsoft-tmt", "jira"],
+      "resources": ["owasp-samm", "nist-spf-800-160"],
+      "estimatedTime": "2-4 weeks",
+      "icon": "GitBranch",
+      "color": "from-blue-500 to-cyan-500"
+    },
+    {
+      "id": "code",
+      "name": "Secure Coding",
+      "slug": "code",
+      "description": "Master secure coding practices and learn to identify common vulnerabilities during development.",
+      "difficulty": "beginner",
+      "order": 2,
+      "skills": [
+        {
+          "id": "owasp-top10",
+          "name": "OWASP Top 10",
+          "description": "Understand and prevent the most critical web application security risks",
+          "subSkills": [
+            {"id": "injection", "name": "Injection Prevention", "description": "SQL, NoSQL, OS command injection prevention techniques"},
+            {"id": "xss", "name": "Cross-Site Scripting (XSS)", "description": "Prevent XSS attacks through proper output encoding"},
+            {"id": "broken-auth", "name": "Broken Authentication", "description": "Implement secure authentication mechanisms"},
+            {"id": "sensitive-data", "name": "Sensitive Data Exposure", "description": "Protect sensitive data at rest and in transit"}
+          ],
+          "tools": ["semgrep", "sonarqube", "bandit"],
+          "resources": ["owasp-top10", "owasp-cheat-sheets"]
+        },
+        {
+          "id": "input-validation",
+          "name": "Input Validation",
+          "description": "Properly validate and sanitize all user inputs",
+          "subSkills": [
+            {"id": "whitelist", "name": "Allowlist Validation", "description": "Use allowlist approach for input validation"},
+            {"id": "sanitization", "name": "Input Sanitization", "description": "Properly sanitize user inputs"},
+            {"id": "encoding", "name": "Output Encoding", "description": "Encode output to prevent injection attacks"}
+          ],
+          "tools": ["validation-libraries", "framework-validation"],
+          "resources": ["owasp-validation-guide", "input-validation-cheatsheet"]
+        },
+        {
+          "id": "secrets-management",
+          "name": "Secrets Management",
+          "description": "Never commit secrets to code repositories",
+          "subSkills": [
+            {"id": "no-secrets-code", "name": "No Secrets in Code", "description": "Avoid hardcoding secrets in source code"},
+            {"id": "env-variables", "name": "Environment Variables", "description": "Use environment variables for configuration"},
+            {"id": "secrets-scanning", "name": "Secrets Scanning", "description": "Detect and prevent secrets in code"}
+          ],
+          "tools": ["gitleaks", "trufflehog", "hashicorp-vault"],
+          "resources": ["secrets-management-guide", "owasp-secrets-cheatsheet"]
+        },
+        {
+          "id": "code-review",
+          "name": "Security Code Review",
+          "description": "Review code for security vulnerabilities",
+          "subSkills": [
+            {"id": "review-checklist", "name": "Security Review Checklist", "description": "Use checklists for consistent security reviews"},
+            {"id": "peer-review", "name": "Peer Review Process", "description": "Implement security-focused peer reviews"},
+            {"id": "automated-analysis", "name": "Automated Analysis", "description": "Integrate SAST tools in code review"}
+          ],
+          "tools": ["github-pull-requests", "gitlab-merge-requests", "crucible"],
+          "resources": ["owasp-code-review-guide"]
+        }
+      ],
+      "tools": ["sonarqube", "semgrep", "gitleaks", "bandit"],
+      "resources": ["owasp-cheat-sheets", "secure-coding-guide"],
+      "estimatedTime": "3-4 weeks",
+      "icon": "Code",
+      "color": "from-cyan-500 to-teal-500"
+    },
+    {
+      "id": "build",
+      "name": "Build & Compile",
+      "slug": "build",
+      "description": "Integrate security scanning into your build process and manage dependencies securely.",
+      "difficulty": "intermediate",
+      "order": 3,
+      "skills": [
+        {
+          "id": "sast-integration",
+          "name": "SAST Integration",
+          "description": "Integrate static analysis in CI/CD pipelines",
+          "subSkills": [
+            {"id": "pipeline-setup", "name": "Pipeline Configuration", "description": "Configure SAST tools in CI/CD pipelines"},
+            {"id": "quality-gates", "name": "Quality Gates", "description": "Define and enforce security quality gates"},
+            {"id": "result-analysis", "name": "Result Analysis", "description": "Analyze and triage SAST findings"}
+          ],
+          "tools": ["sonarqube", "semgrep", "codeql", "checkmarx"],
+          "resources": ["sast-integration-guide", "devsecops-pipeline-patterns"]
+        },
+        {
+          "id": "dependency-scanning",
+          "name": "Dependency Scanning (SCA)",
+          "description": "Scan dependencies for known vulnerabilities",
+          "subSkills": [
+            {"id": "vuln-detection", "name": "Vulnerability Detection", "description": "Detect vulnerable dependencies"},
+            {"id": "license-compliance", "name": "License Compliance", "description": "Check dependency licenses for compliance"},
+            {"id": "auto-updates", "name": "Automated Updates", "description": "Automate dependency updates"}
+          ],
+          "tools": ["snyk", "dependabot", "owasp-dependency-check"],
+          "resources": ["sca-guide", "dependency-management-best-practices"]
+        },
+        {
+          "id": "container-security",
+          "name": "Container Security",
+          "description": "Secure container images and registries",
+          "subSkills": [
+            {"id": "secure-base", "name": "Secure Base Images", "description": "Use minimal, secure base images"},
+            {"id": "image-scanning", "name": "Image Scanning", "description": "Scan images for vulnerabilities"},
+            {"id": "dockerfile-best-practices", "name": "Dockerfile Best Practices", "description": "Write secure Dockerfiles"}
+          ],
+          "tools": ["trivy", "grype", "hadolint", "docker-scout"],
+          "resources": ["container-security-guide", "docker-security-best-practices"]
+        },
+        {
+          "id": "sbom-generation",
+          "name": "SBOM Generation",
+          "description": "Generate Software Bill of Materials",
+          "subSkills": [
+            {"id": "sbom-formats", "name": "SBOM Formats", "description": "Understand SPDX and CycloneDX formats"},
+            {"id": "sbom-generation", "name": "Generation Tools", "description": "Generate SBOMs automatically"},
+            {"id": "supply-chain", "name": "Supply Chain Security", "description": "Secure the software supply chain"}
+          ],
+          "tools": ["syft", "sbom-tool", "trivy"],
+          "resources": ["sbom-guide", "supply-chain-security"]
+        }
+      ],
+      "tools": ["trivy", "snyk", "syft", "sonarqube"],
+      "resources": ["devsecops-pipeline-guide", "container-security-best-practices"],
+      "estimatedTime": "4-6 weeks",
+      "icon": "Box",
+      "color": "from-green-500 to-emerald-500"
+    },
+    {
+      "id": "test",
+      "name": "Security Testing",
+      "slug": "test",
+      "description": "Implement comprehensive security testing strategies including DAST and penetration testing.",
+      "difficulty": "intermediate",
+      "order": 4,
+      "skills": [
+        {
+          "id": "dast",
+          "name": "Dynamic Application Security Testing",
+          "description": "Test running applications for security vulnerabilities",
+          "subSkills": [
+            {"id": "dast-tools", "name": "DAST Tools", "description": "Configure and run DAST scanners"},
+            {"id": "auth-testing", "name": "Authentication Testing", "description": "Test authentication mechanisms"},
+            {"id": "api-testing", "name": "API Security Testing", "description": "Test API endpoints for vulnerabilities"}
+          ],
+          "tools": ["owasp-zap", "burp-suite", "nuclei"],
+          "resources": ["owasp-web-security-testing-guide", "dast-best-practices"]
+        },
+        {
+          "id": "penetration-testing",
+          "name": "Penetration Testing",
+          "description": "Perform security assessments through simulated attacks",
+          "subSkills": [
+            {"id": "web-pentest", "name": "Web Application Pentesting", "description": "Test web applications for vulnerabilities"},
+            {"id": "api-pentest", "name": "API Pentesting", "description": "Test APIs for security issues"},
+            {"id": "cloud-pentest", "name": "Cloud Pentesting", "description": "Assess cloud infrastructure security"}
+          ],
+          "tools": ["burp-suite", "metasploit", "nmap"],
+          "resources": ["owasp-testing-guide", "pentest-methodology"]
+        },
+        {
+          "id": "fuzzing",
+          "name": "Fuzzing",
+          "description": "Use fuzzing to discover vulnerabilities through automated input generation",
+          "subSkills": [
+            {"id": "fuzzing-tools", "name": "Fuzzing Tools", "description": "Use fuzzing tools to discover vulnerabilities"},
+            {"id": "fuzzing-targets", "name": "Target Selection", "description": "Identify and prioritize fuzzing targets"},
+            {"id": "crash-analysis", "name": "Crash Analysis", "description": "Analyze crashes to find vulnerabilities"}
+          ],
+          "tools": ["afl", "libfuzzer", "oss-fuzz"],
+          "resources": ["fuzzing-guide", "fuzzing-best-practices"]
+        },
+        {
+          "id": "security-regression",
+          "name": "Security Regression Testing",
+          "description": "Automate security tests to prevent regression",
+          "subSkills": [
+            {"id": "test-automation", "name": "Test Automation", "description": "Automate security test execution"},
+            {"id": "baseline-tests", "name": "Baseline Tests", "description": "Create security baseline test suites"},
+            {"id": "ci-integration", "name": "CI/CD Integration", "description": "Integrate security tests in pipelines"}
+          ],
+          "tools": ["owasp-zap-automation", "nuclei", "custom-scripts"],
+          "resources": ["security-test-automation-guide"]
+        }
+      ],
+      "tools": ["owasp-zap", "burp-suite", "nuclei"],
+      "resources": ["owasp-web-security-testing-guide", "penetration-testing-guide"],
+      "estimatedTime": "4-6 weeks",
+      "icon": "TestTube",
+      "color": "from-yellow-500 to-orange-500"
+    },
+    {
+      "id": "release",
+      "name": "Release & Package",
+      "slug": "release",
+      "description": "Secure your release pipeline and manage artifact integrity.",
+      "difficulty": "intermediate",
+      "order": 5,
+      "skills": [
+        {
+          "id": "artifact-signing",
+          "name": "Artifact Signing & Verification",
+          "description": "Sign and verify artifacts for integrity and authenticity",
+          "subSkills": [
+            {"id": "code-signing", "name": "Code Signing", "description": "Sign code releases with certificates"},
+            {"id": "image-signing", "name": "Container Image Signing", "description": "Sign container images"},
+            {"id": "attestations", "name": "Attestations", "description": "Create and verify attestations"}
+          ],
+          "tools": ["cosign", "sigstore", "gpg"],
+          "resources": ["artifact-signing-guide", "sigstore-documentation"]
+        },
+        {
+          "id": "policy-as-code",
+          "name": "Policy as Code",
+          "description": "Define and enforce security policies programmatically",
+          "subSkills": [
+            {"id": "opa", "name": "Open Policy Agent", "description": "Use OPA for policy enforcement"},
+            {"id": "rego", "name": "Rego Policy Language", "description": "Write policies in Rego"},
+            {"id": "admission-control", "name": "Admission Controllers", "description": "Implement admission control policies"}
+          ],
+          "tools": ["opa", "conftest", "kyverno"],
+          "resources": ["opa-documentation", "policy-as-code-guide"]
+        },
+        {
+          "id": "compliance-automation",
+          "name": "Compliance Automation",
+          "description": "Automate compliance checking and reporting",
+          "subSkills": [
+            {"id": "compliance-as-code", "name": "Compliance as Code", "description": "Define compliance requirements as code"},
+            {"id": "audit-trails", "name": "Audit Trails", "description": "Generate and maintain audit trails"},
+            {"id": "reporting", "name": "Compliance Reporting", "description": "Automate compliance reporting"}
+          ],
+          "tools": ["openscap", "inspec", "prisma-cloud"],
+          "resources": ["compliance-automation-guide", "audit-automation"]
+        },
+        {
+          "id": "secure-release",
+          "name": "Secure Release Process",
+          "description": "Implement secure release management practices",
+          "subSkills": [
+            {"id": "release-notes", "name": "Security Release Notes", "description": "Document security changes in releases"},
+            {"id": "vuln-disclosure", "name": "Vulnerability Disclosure", "description": "Handle security disclosures properly"},
+            {"id": "version-tracking", "name": "Version Tracking", "description": "Track versions and security fixes"}
+          ],
+          "tools": ["github-releases", "jira", "cve-database"],
+          "resources": ["secure-release-guide", "disclosure-guidelines"]
+        }
+      ],
+      "tools": ["cosign", "opa", "kyverno"],
+      "resources": ["policy-as-code-guide", "sigstore-documentation"],
+      "estimatedTime": "3-4 weeks",
+      "icon": "Rocket",
+      "color": "from-orange-500 to-red-500"
+    },
+    {
+      "id": "deploy",
+      "name": "Deploy & Configure",
+      "slug": "deploy",
+      "description": "Deploy securely with infrastructure as code and configuration management.",
+      "difficulty": "advanced",
+      "order": 6,
+      "skills": [
+        {
+          "id": "iac-security",
+          "name": "Infrastructure as Code Security",
+          "description": "Secure IaC templates and configurations",
+          "subSkills": [
+            {"id": "terraform-security", "name": "Terraform Security", "description": "Secure Terraform configurations"},
+            {"id": "cloudformation-security", "name": "CloudFormation Security", "description": "Secure CloudFormation templates"},
+            {"id": "arm-security", "name": "ARM Template Security", "description": "Secure Azure ARM templates"}
+          ],
+          "tools": ["checkov", "tfsec", "terrascan", "kics"],
+          "resources": ["iac-security-guide", "terraform-security-best-practices"]
+        },
+        {
+          "id": "kubernetes-security",
+          "name": "Kubernetes Security",
+          "description": "Secure Kubernetes deployments and clusters",
+          "subSkills": [
+            {"id": "pod-security", "name": "Pod Security Standards", "description": "Implement pod security standards"},
+            {"id": "network-policies", "name": "Network Policies", "description": "Configure network policies"},
+            {"id": "rbac", "name": "RBAC Configuration", "description": "Implement proper RBAC"}
+          ],
+          "tools": ["kubescape", "falco", "kyverno"],
+          "resources": ["kubernetes-security-guide", "k8s-hardening-guide"]
+        },
+        {
+          "id": "cloud-security",
+          "name": "Cloud Security Configuration",
+          "description": "Secure cloud infrastructure configuration",
+          "subSkills": [
+            {"id": "aws-security", "name": "AWS Security", "description": "Secure AWS infrastructure"},
+            {"id": "azure-security", "name": "Azure Security", "description": "Secure Azure infrastructure"},
+            {"id": "gcp-security", "name": "GCP Security", "description": "Secure GCP infrastructure"}
+          ],
+          "tools": ["prowler", "scoutsuite", "checkov"],
+          "resources": ["cloud-security-guide", "cspm-best-practices"]
+        },
+        {
+          "id": "secrets-deploy",
+          "name": "Secrets Management at Scale",
+          "description": "Manage secrets across deployments",
+          "subSkills": [
+            {"id": "vault-integration", "name": "Vault Integration", "description": "Integrate HashiCorp Vault"},
+            {"id": "secret-rotation", "name": "Secret Rotation", "description": "Automate secret rotation"},
+            {"id": "external-secrets", "name": "External Secrets Operator", "description": "Use external secrets in Kubernetes"}
+          ],
+          "tools": ["hashicorp-vault", "aws-secrets-manager", "external-secrets"],
+          "resources": ["secrets-management-guide", "vault-best-practices"]
+        }
+      ],
+      "tools": ["checkov", "tfsec", "hashicorp-vault", "kubescape"],
+      "resources": ["iac-security-guide", "kubernetes-security-guide"],
+      "estimatedTime": "6-8 weeks",
+      "icon": "Cloud",
+      "color": "from-purple-500 to-pink-500"
+    },
+    {
+      "id": "operate",
+      "name": "Operate & Monitor",
+      "slug": "operate",
+      "description": "Implement continuous security monitoring and incident response.",
+      "difficulty": "advanced",
+      "order": 7,
+      "skills": [
+        {
+          "id": "rasp",
+          "name": "Runtime Application Self-Protection",
+          "description": "Protect applications at runtime",
+          "subSkills": [
+            {"id": "rasp-tools", "name": "RASP Tools", "description": "Deploy RASP solutions"},
+            {"id": "runtime-monitoring", "name": "Runtime Monitoring", "description": "Monitor application behavior at runtime"},
+            {"id": "attack-detection", "name": "Attack Detection", "description": "Detect attacks in real-time"}
+          ],
+          "tools": ["openrasp", "contrast-security", "sqreen"],
+          "resources": ["rasp-guide", "runtime-security-best-practices"]
+        },
+        {
+          "id": "siem",
+          "name": "SIEM Integration",
+          "description": "Integrate security monitoring with SIEM",
+          "subSkills": [
+            {"id": "log-aggregation", "name": "Log Aggregation", "description": "Collect and aggregate security logs"},
+            {"id": "alert-config", "name": "Alert Configuration", "description": "Configure security alerts"},
+            {"id": "dashboard", "name": "Security Dashboards", "description": "Create security dashboards"}
+          ],
+          "tools": ["splunk", "elastic-security", "grafana-loki"],
+          "resources": ["siem-integration-guide", "security-monitoring-best-practices"]
+        },
+        {
+          "id": "incident-response",
+          "name": "Incident Response",
+          "description": "Handle security incidents effectively",
+          "subSkills": [
+            {"id": "ir-playbooks", "name": "IR Playbooks", "description": "Create incident response playbooks"},
+            {"id": "forensics", "name": "Digital Forensics", "description": "Perform digital forensics"},
+            {"id": "communication", "name": "Communication Protocols", "description": "Handle incident communication"}
+          ],
+          "tools": ["pagerduty", "jira-service-management", "thehive"],
+          "resources": ["nist-ir-guide", "incident-response-handbook"]
+        },
+        {
+          "id": "vulnerability-management",
+          "name": "Vulnerability Management",
+          "description": "Manage vulnerabilities across the organization",
+          "subSkills": [
+            {"id": "cve-tracking", "name": "CVE Tracking", "description": "Track and manage CVEs"},
+            {"id": "patch-management", "name": "Patch Management", "description": "Manage security patches"},
+            {"id": "risk-prioritization", "name": "Risk Prioritization", "description": "Prioritize vulnerabilities by risk"}
+          ],
+          "tools": ["qualys", "tenable", "rapid7"],
+          "resources": ["vm-best-practices", "cve-management-guide"]
+        }
+      ],
+      "tools": ["falco", "splunk", "elastic-security"],
+      "resources": ["security-operations-guide", "incident-response-handbook"],
+      "estimatedTime": "6-8 weeks",
+      "icon": "Activity",
+      "color": "from-pink-500 to-rose-500"
+    },
+    {
+      "id": "monitor",
+      "name": "Continuous Improvement",
+      "slug": "monitor",
+      "description": "Establish feedback loops and improve security posture continuously.",
+      "difficulty": "expert",
+      "order": 8,
+      "skills": [
+        {
+          "id": "security-metrics",
+          "name": "Security Metrics & KPIs",
+          "description": "Measure and track security performance",
+          "subSkills": [
+            {"id": "mttr", "name": "MTTR Measurement", "description": "Track mean time to remediate"},
+            {"id": "risk-scoring", "name": "Risk Scoring", "description": "Calculate and track risk scores"},
+            {"id": "security-roi", "name": "Security ROI", "description": "Measure security ROI"}
+          ],
+          "tools": ["security-dashboards", "custom-metrics"],
+          "resources": ["security-metrics-guide", "bsimm"]
+        },
+        {
+          "id": "threat-intelligence",
+          "name": "Threat Intelligence",
+          "description": "Leverage threat intelligence for proactive security",
+          "subSkills": [
+            {"id": "threat-feeds", "name": "Threat Feeds", "description": "Integrate threat intelligence feeds"},
+            {"id": "ioc-analysis", "name": "IOC Analysis", "description": "Analyze indicators of compromise"},
+            {"id": "threat-hunting", "name": "Threat Hunting", "description": "Proactively hunt for threats"}
+          ],
+          "tools": ["misp", "opencti", "threatconnect"],
+          "resources": ["threat-intelligence-guide", "threat-hunting-handbook"]
+        },
+        {
+          "id": "compliance-monitoring",
+          "name": "Continuous Compliance",
+          "description": "Maintain continuous compliance monitoring",
+          "subSkills": [
+            {"id": "compliance-dashboards", "name": "Compliance Dashboards", "description": "Create compliance dashboards"},
+            {"id": "audit-automation", "name": "Audit Automation", "description": "Automate compliance audits"},
+            {"id": "regulatory-updates", "name": "Regulatory Updates", "description": "Stay current with regulations"}
+          ],
+          "tools": ["prisma-cloud", "wiz", "orca-security"],
+          "resources": ["compliance-automation-guide", "regulatory-tracking"]
+        },
+        {
+          "id": "security-training",
+          "name": "Security Training & Culture",
+          "description": "Build security culture through training",
+          "subSkills": [
+            {"id": "security-awareness", "name": "Security Awareness", "description": "Conduct security awareness training"},
+            {"id": "secure-coding-training", "name": "Secure Coding Training", "description": "Train developers in secure coding"},
+            {"id": "security-champions", "name": "Security Champions Program", "description": "Establish security champions"}
+          ],
+          "tools": ["security-training-platforms", "ctf-platforms"],
+          "resources": ["security-training-guide", "security-champions-handbook"]
+        }
+      ],
+      "tools": ["misp", "opencti", "security-dashboards"],
+      "resources": ["security-metrics-guide", "bsimm", "threat-intelligence-guide"],
+      "estimatedTime": "4-6 weeks",
+      "icon": "ShieldCheck",
+      "color": "from-indigo-500 to-purple-500"
+    }
+  ]
+}

@@ -1,0 +1,180 @@
+{
+  "examples": [
+    {
+      "id": "sast-sonarqube-github",
+      "title": "SAST with SonarQube in GitHub Actions",
+      "slug": "sast-sonarqube-github",
+      "description": "Automated static analysis for pull requests using SonarQube. Scans code for bugs, vulnerabilities, and code smells.",
+      "category": "github-actions",
+      "language": "yaml",
+      "code": "name: SonarQube Analysis\non:\n  push:\n    branches: [main, develop]\n  pull_request:\n    branches: [main]\n\njobs:\n  sonarqube:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n        with:\n          fetch-depth: 0\n      \n      - name: SonarQube Scan\n        uses: sonarsource/sonarqube-scan-action@master\n        env:\n          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}\n          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}\n      \n      - name: SonarQube Quality Gate\n        uses: sonarsource/sonarqube-quality-gate-action@master\n        timeout-minutes: 5\n        env:\n          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}",
+      "usageInstructions": [
+        "Add SONAR_TOKEN and SONAR_HOST_URL to your GitHub repository secrets",
+        "Create a sonar-project.properties file in your repository root",
+        "The workflow will fail if the Quality Gate is not passed"
+      ],
+      "tags": ["sast", "sonarqube", "quality-gate", "pr-analysis"],
+      "relatedTools": ["sonarqube"]
+    },
+    {
+      "id": "trivy-container-scan",
+      "title": "Container Scanning with Trivy",
+      "slug": "trivy-container-scan",
+      "description": "Scan Docker images for vulnerabilities with Trivy. Blocks deployment if HIGH or CRITICAL vulnerabilities are found.",
+      "category": "github-actions",
+      "language": "yaml",
+      "code": "name: Container Security Scan\non:\n  push:\n    branches: [main]\n\njobs:\n  trivy:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      \n      - name: Build Image\n        run: docker build -t myapp:${{ github.sha }} .\n      \n      - name: Run Trivy vulnerability scanner\n        uses: aquasecurity/trivy-action@master\n        with:\n          image-ref: 'myapp:${{ github.sha }}'\n          format: 'table'\n          exit-code: '1'\n          ignore-unfixed: true\n          vuln-type: 'os,library'\n          severity: 'CRITICAL,HIGH'\n          output: 'trivy-results.txt'\n      \n      - name: Upload Trivy results\n        uses: actions/upload-artifact@v4\n        with:\n          name: trivy-results\n          path: trivy-results.txt",
+      "usageInstructions": [
+        "Dockerfile must be in the repository root",
+        "Adjust severity levels as needed (CRITICAL,HIGH,MEDIUM,LOW)",
+        "Results are uploaded as artifacts for review"
+      ],
+      "tags": ["container", "trivy", "vulnerability-scanning", "docker"],
+      "relatedTools": ["trivy"]
+    },
+    {
+      "id": "semgrep-sast",
+      "title": "Semgrep SAST Scan",
+      "slug": "semgrep-sast",
+      "description": "Fast, customizable static analysis with Semgrep. Detect security issues using community-maintained rules.",
+      "category": "github-actions",
+      "language": "yaml",
+      "code": "name: Semgrep Security Scan\non:\n  push:\n    branches: [main]\n  pull_request:\n\njobs:\n  semgrep:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      \n      - name: Semgrep Scan\n        uses: returntocorp/semgrep-action@v1\n        with:\n          config: >-\n            p/security-audit\n            p/secrets\n            p/owasp-top-ten\n            p/react\n            p/typescript\n          generateSarif: true\n      \n      - name: Upload SARIF file\n        uses: github/codeql-action/upload-sarif@v3\n        with:\n          sarif_file: semgrep.sarif",
+      "usageInstructions": [
+        "Customize the config parameter with rules relevant to your stack",
+        "SARIF results integrate with GitHub Security tab",
+        "Add custom rules in .semgrep/ directory"
+      ],
+      "tags": ["sast", "semgrep", "security-audit", "static-analysis"],
+      "relatedTools": ["semgrep"]
+    },
+    {
+      "id": "snyk-sca",
+      "title": "SCA with Snyk",
+      "slug": "snyk-sca",
+      "description": "Scan dependencies for known vulnerabilities with Snyk. Monitor and fix vulnerable packages.",
+      "category": "github-actions",
+      "language": "yaml",
+      "code": "name: Snyk Security Scan\non:\n  push:\n    branches: [main]\n  pull_request:\n\njobs:\n  snyk:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      \n      - name: Run Snyk to check for vulnerabilities\n        uses: snyk/actions/node@master\n        env:\n          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}\n        with:\n          command: test\n          args: --severity-threshold=high\n      \n      - name: Run Snyk monitor\n        uses: snyk/actions/node@master\n        env:\n          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}\n        with:\n          command: monitor\n          args: --project-name=${{ github.repository }}",
+      "usageInstructions": [
+        "Add SNYK_TOKEN to your repository secrets",
+        "Monitor mode tracks vulnerabilities over time",
+        "Replace 'node' with your language: python, golang, etc."
+      ],
+      "tags": ["sca", "snyk", "dependency-scanning", "vulnerabilities"],
+      "relatedTools": ["snyk"]
+    },
+    {
+      "id": "gitleaks-secrets",
+      "title": "Secrets Scanning with GitLeaks",
+      "slug": "gitleaks-secrets",
+      "description": "Scan repository for accidentally committed secrets. Detect API keys, passwords, and tokens.",
+      "category": "github-actions",
+      "language": "yaml",
+      "code": "name: GitLeaks Secrets Scan\non:\n  push:\n    branches: [main]\n  pull_request:\n\njobs:\n  gitleaks:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n        with:\n          fetch-depth: 0\n      \n      - name: GitLeaks Scan\n        uses: gitleaks/gitleaks-action@v2\n        env:\n          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}\n          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}",
+      "usageInstructions": [
+        "GITLEAKS_LICENSE is optional for public repos",
+        "Scans entire git history for secrets",
+        "Configure .gitleaks.toml for custom rules"
+      ],
+      "tags": ["secrets", "gitleaks", "credential-scanning", "security"],
+      "relatedTools": ["gitleaks"]
+    },
+    {
+      "id": "gitlab-security-stages",
+      "title": "GitLab Security Stages",
+      "slug": "gitlab-security-stages",
+      "description": "Complete security pipeline with SAST, DAST, and dependency scanning in GitLab CI.",
+      "category": "gitlab-ci",
+      "language": "yaml",
+      "code": "include:\n  - template: Security/SAST.gitlab-ci.yml\n  - template: Security/Dependency-Scanning.gitlab-ci.yml\n  - template: Security/Container-Scanning.gitlab-ci.yml\n  - template: Security/Secret-Detection.gitlab-ci.yml\n\nstages:\n  - test\n  - security\n  - build\n  - deploy\n\nsast:\n  stage: security\n  artifacts:\n    reports:\n      sast: gl-sast-report.json\n\ndependency_scanning:\n  stage: security\n  artifacts:\n    reports:\n      dependency_scanning: gl-dependency-scanning-report.json\n\ncontainer_scanning:\n  stage: security\n  variables:\n    DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}\n\nsecret_detection:\n  stage: security",
+      "usageInstructions": [
+        "GitLab Ultimate includes all security templates",
+        "Reports appear in Merge Request security widget",
+        "Customize with .gitlab-ci.yml variables"
+      ],
+      "tags": ["gitlab", "sast", "dast", "sca", "security-pipeline"],
+      "relatedTools": []
+    },
+    {
+      "id": "jenkins-security-pipeline",
+      "title": "Jenkins Security Pipeline",
+      "slug": "jenkins-security-pipeline",
+      "description": "Declarative Jenkins pipeline with integrated security scanning stages.",
+      "category": "jenkins",
+      "language": "groovy",
+      "code": "pipeline {\n    agent any\n\n    environment {\n        SONAR_TOKEN = credentials('sonar-token')\n    }\n\n    stages {\n        stage('SAST - SonarQube') {\n            steps {\n                script {\n                    sh 'sonar-scanner \\\n                        -Dsonar.projectKey=myapp \\\n                        -Dsonar.host.url=${SONAR_HOST} \\\n                        -Dsonar.login=${SONAR_TOKEN}'\n                }\n            }\n        }\n\n        stage('Dependency Check') {\n            steps {\n                dependencyCheck additionalArguments: '''\n                    --scan .\n                    --format ALL\n                    --prettyPrint\n                ''', odcInstallation: 'dependency-check'\n            }\n        }\n\n        stage('Container Scan - Trivy') {\n            steps {\n                script {\n                    sh 'trivy image --severity HIGH,CRITICAL --exit-code 1 myapp:latest'\n                }\n            }\n        }\n\n        stage('DAST - OWASP ZAP') {\n            steps {\n                script {\n                    sh 'docker run -t owasp/zap2docker-stable zap-baseline.py \\\n                        -t http://target:8080 || true'\n                }\n            }\n        }\n    }\n\n    post {\n        always {\n            recordIssues(tools: [dependencyCheck(pattern: '**/dependency-check-report.xml')])\n        }\n    }\n}",
+      "usageInstructions": [
+        "Install required plugins: Dependency Check, SonarQube Scanner",
+        "Configure credentials in Jenkins for tokens",
+        "Adjust ZAP target URL as needed"
+      ],
+      "tags": ["jenkins", "pipeline", "sast", "dast", "security"],
+      "relatedTools": []
+    },
+    {
+      "id": "secure-dockerfile",
+      "title": "Secure Dockerfile Template",
+      "slug": "secure-dockerfile",
+      "description": "Production-ready secure Dockerfile following best practices for container security.",
+      "category": "docker",
+      "language": "dockerfile",
+      "code": "# Use specific version, not :latest\nFROM node:20-alpine@sha256:specific-digest\n\n# Create non-root user\nRUN addgroup -g 1001 -S appgroup && \\\n    adduser -u 1001 -S appuser -G appgroup\n\n# Set secure working directory\nWORKDIR /app\n\n# Copy with proper ownership\nCOPY --chown=appuser:appgroup package*.json ./\nRUN npm ci --only=production\n\nCOPY --chown=appuser:appgroup . .\n\n# Drop privileges\nUSER appuser\n\n# Read-only root filesystem\nRUN chmod -R 755 /app\n\n# No sensitive data in environment\nENV NODE_ENV=production \\\n    NPM_CONFIG_CACHE=/tmp/.npm\n\n# Health check\nHEALTHCHECK --interval=30s --timeout=3s --start-period=5s \\\n    CMD node healthcheck.js || exit 1\n\n# Use non-privileged port\nEXPOSE 3000\n\n# Run with security flags\nCMD [\"node\", \"--no-warnings\", \"server.js\"]",
+      "usageInstructions": [
+        "Always use specific image digests, not :latest",
+        "Run as non-root user",
+        "Keep the root filesystem read-only when possible"
+      ],
+      "tags": ["docker", "dockerfile", "container-security", "best-practices"],
+      "relatedTools": ["hadolint", "trivy"]
+    },
+    {
+      "id": "k8s-pod-security",
+      "title": "Kubernetes Pod Security Standards",
+      "slug": "k8s-pod-security",
+      "description": "Pod security configuration following Kubernetes Pod Security Standards.",
+      "category": "kubernetes",
+      "language": "yaml",
+      "code": "apiVersion: v1\nkind: Pod\nmetadata:\n  name: secure-app\n  labels:\n    app: secure-app\nspec:\n  securityContext:\n    runAsNonRoot: true\n    runAsUser: 1000\n    runAsGroup: 1000\n    fsGroup: 1000\n    seccompProfile:\n      type: RuntimeDefault\n  containers:\n    - name: app\n      image: myapp:latest\n      securityContext:\n        allowPrivilegeEscalation: false\n        readOnlyRootFilesystem: true\n        runAsNonRoot: true\n        runAsUser: 1000\n        capabilities:\n          drop:\n            - ALL\n      resources:\n        limits:\n          memory: \"512Mi\"\n          cpu: \"500m\"\n        requests:\n          memory: \"256Mi\"\n          cpu: \"250m\"\n      volumeMounts:\n        - name: tmp\n          mountPath: /tmp\n  volumes:\n    - name: tmp\n      emptyDir: {}",
+      "usageInstructions": [
+        "Apply the Restricted Pod Security Standard",
+        "All containers must run as non-root",
+        "Drop all capabilities and use read-only filesystem"
+      ],
+      "tags": ["kubernetes", "pod-security", "security-context", "best-practices"],
+      "relatedTools": ["kubescape", "kyverno"]
+    },
+    {
+      "id": "terraform-security-scan",
+      "title": "Terraform Security with Checkov",
+      "slug": "terraform-security-scan",
+      "description": "Scan Terraform configurations for security and compliance issues.",
+      "category": "terraform",
+      "language": "yaml",
+      "code": "# GitHub Actions workflow for Terraform security\nname: Terraform Security Scan\non:\n  push:\n    paths:\n      - '**.tf'\n  pull_request:\n\njobs:\n  checkov:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      \n      - name: Run Checkov\n        uses: bridgecrewio/checkov-action@master\n        with:\n          directory: ./terraform\n          framework: terraform\n          check: CKV_AWS_*,CKV_GCP_*,CKV_AZURE_*\n          output_format: junitxml\n          output_file_path: reports/checkov-report.xml\n          soft_fail: false\n      \n      - name: Publish Test Results\n        uses: EnricoMi/publish-unit-test-result-action@v2\n        if: always()\n        with:\n          files: reports/*.xml",
+      "usageInstructions": [
+        "Place Terraform files in ./terraform directory",
+        "Customize check IDs for your cloud provider",
+        "Set soft_fail: true for initial rollout"
+      ],
+      "tags": ["terraform", "iac", "checkov", "security-scanning"],
+      "relatedTools": ["checkov", "tfsec"]
+    },
+    {
+      "id": "pre-commit-security",
+      "title": "Security Pre-commit Hooks",
+      "slug": "pre-commit-security",
+      "description": "Pre-commit configuration with multiple security scanners.",
+      "category": "pre-commit",
+      "language": "yaml",
+      "code": "# .pre-commit-config.yaml\nrepos:\n  # Secrets scanning\n  - repo: https://github.com/gitleaks/gitleaks\n    rev: v8.18.0\n    hooks:\n      - id: gitleaks\n\n  # Static analysis\n  - repo: https://github.com/returntocorp/semgrep\n    rev: v1.52.0\n    hooks:\n      - id: semgrep\n        args: ['--config', 'auto', '--error']\n\n  # IaC security\n  - repo: https://github.com/antonbabenko/pre-commit-terraform\n    rev: v1.83.5\n    hooks:\n      - id: terraform_tfsec\n      - id: terraform_checkov\n        args:\n          - --args=--check CKV_AWS_*\n\n  # Docker security\n  - repo: https://github.com/hadolint/hadolint\n    rev: v2.12.0\n    hooks:\n      - id: hadolint\n\n  # Detect secrets (Yelp)\n  - repo: https://github.com/Yelp/detect-secrets\n    rev: v1.4.0\n    hooks:\n      - id: detect-secrets\n        args: ['--baseline', '.secrets.baseline']\n\n  # Python security\n  - repo: https://github.com/PyCQA/bandit\n    rev: 1.7.5\n    hooks:\n      - id: bandit\n        args: ['-r', '-ll']",
+      "usageInstructions": [
+        "Install pre-commit: pip install pre-commit",
+        "Run: pre-commit install",
+        "Generate baseline: detect-secrets scan > .secrets.baseline"
+      ],
+      "tags": ["pre-commit", "secrets", "sast", "iac", "security"],
+      "relatedTools": ["gitleaks", "semgrep", "tfsec", "hadolint", "bandit"]
+    }
+  ]
+}
