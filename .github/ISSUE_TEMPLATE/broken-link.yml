@@ -1,0 +1,17 @@
+name: 🔗 Broken Link Report
+description: Report a link that is no longer working.
+title: "[BROKEN]: <Link Description>"
+labels: ["bug", "broken-link"]
+body:
+  - type: input
+    id: broken_url
+    attributes:
+      label: Which link is broken?
+      placeholder: Paste the URL here...
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      placeholder: Is there a replacement link?

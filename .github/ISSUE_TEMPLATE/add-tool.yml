@@ -1,0 +1,43 @@
+name: 🚀 Suggest a New Tool
+description: Propose a DevSecOps tool to be added to the list.
+title: "[SUGGEST]: <Tool Name>"
+labels: ["enhancement", "new-tool"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new tool! Please fill out the form below.
+  - type: input
+    id: tool_name
+    attributes:
+      label: Tool Name
+      placeholder: e.g., Snyk
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - SCA
+        - SAST
+        - DAST
+        - IaC Security
+        - Secret Scanning
+        - Container Security
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Official Link
+      placeholder: https://...
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Short Description
+      placeholder: What does this tool do?
+    validations:
+      required: true
