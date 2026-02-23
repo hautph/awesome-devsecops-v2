@@ -1,4 +1,4 @@
-# Awesome DevSecOps
+# Awesome DevSecOps v0.2.0
 
 A comprehensive DevSecOps resource hub featuring security tools, learning paths, code examples, and best practices for integrating security into your DevOps pipeline. This project serves as a curated collection of resources to help developers, security professionals, and DevOps engineers implement security measures throughout the software development lifecycle.
 
@@ -116,9 +116,17 @@ awesome-devsecops-v2/
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
 - `npm run format` - Format code with Prettier
+- `npm run db:push` - Push Prisma schema to database
+- `npm run db:generate` - Generate Prisma client
+- `npm run db:migrate` - Run Prisma migration
+- `npm run db:reset` - Reset Prisma database
 - `bun run dev` - Start development server with Bun
 - `bun run build` - Build for production with Bun
 - `bun run start` - Start production server with Bun
+- `bun run db:push` - Push Prisma schema to database with Bun
+- `bun run db:generate` - Generate Prisma client with Bun
+- `bun run db:migrate` - Run Prisma migration with Bun
+- `bun run db:reset` - Reset Prisma database with Bun
 
 ## 🛡️ DevSecOps Tools Included
 
@@ -231,12 +239,21 @@ To contribute learning resources or code examples:
 
 ## 🎨 Technology Stack
 
-- **Framework**: Next.js 14+ (App Router)
+- **Framework**: Next.js 16+ (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **UI Components**: shadcn/ui
 - **Icons**: Lucide React
-- **State Management**: React Hooks
+- **State Management**: React Hooks, Zustand
+- **Data Fetching**: TanStack Query
+- **Forms**: React Hook Form with Zod validation
+- **Charts**: Recharts
+- **Animations**: Framer Motion
+- **Drag & Drop**: @dnd-kit
+- **Data Tables**: TanStack Table
+- **Authentication**: NextAuth.js
+- **Internationalization**: next-intl
+- **Database**: Prisma ORM
 - **Data**: Static JSON files
 - **Linting**: ESLint
 - **Formatting**: Prettier
@@ -262,7 +279,8 @@ DATABASE_URL=your-database-url
 
 - **Theme**: Modify `src/app/globals.css` and `tailwind.config.ts`
 - **Components**: Customize UI components in `src/components/ui/`
-- **Data**: Update JSON files in `src/data/`
+- **Data**: Update JSON files in `src/data/` or configure Prisma database in `prisma/schema.prisma`
+- **Database**: Manage database schema and migrations with Prisma commands
 
 ## 🚨 Security
 
