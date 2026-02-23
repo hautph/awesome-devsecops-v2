@@ -16,17 +16,6 @@ export default function ToolsPage() {
   const categories = toolsData.categories;
   const tools = toolsData.tools;
 
-  // Hàm xử lý để ngăn chặn XSS dựa trên DOM
-  // Nó chỉ cho phép các URL bắt đầu bằng http:// hoặc https://, tất cả các trường hợp khác sẽ trả về '#'
-  const getSafeUrl = (url: string | undefined): string => {
-    if (!url) return "#";
-    // Sử dụng Regex để kiểm tra URL hợp lệ
-    if (/^https?:\/\//i.test(url)) {
-      return url;
-    }
-    return "#";
-  };
-
   const filteredTools = useMemo(() => {
     return tools.filter((tool) => {
       const matchesSearch =
@@ -148,8 +137,7 @@ export default function ToolsPage() {
                 {filteredTools.map((tool) => (
                   <Link
                     key={tool.id}
-                    // --- FIX XSS: Sử dụng hàm getSafeUrl để làm sạch URL trước khi truyền vào href ---
-                    href={getSafeUrl(tool.website || tool.github)}
+                    href={tool.website || tool.github || "#"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block"
