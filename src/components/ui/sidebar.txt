@@ -83,9 +83,7 @@ function SidebarProvider({
       }
 
       // This sets the cookie to keep the sidebar state.
-      // FIX: Thêm thuộc tính 'Secure' để đảm bảo cookie chỉ được gửi qua HTTPS.
-      // Lưu ý: 'Secure' sẽ hoạt động tốt trên localhost hoặc môi trường HTTPS.
-      document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}; Secure`
+      document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
     },
     [setOpenProp, open]
   )
@@ -152,8 +150,6 @@ function SidebarProvider({
     </SidebarContext.Provider>
   )
 }
-
-// ... (Phần còn lại của code giữ nguyên)
 
 function Sidebar({
   side = "left",
